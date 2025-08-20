@@ -1,4 +1,4 @@
-# SecureLettuce 🔐
+# FileLocker 🔐
 A high-performance file encryption and secure vault system built in C++ with modular encryption support (currently AES-256-GCM) and FUSE filesystem integration.
 
 ## Overview 📖
