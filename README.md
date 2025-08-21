@@ -34,15 +34,15 @@ FileLocker is a comprehensive file security solution that provides:
 
 ## Demo 🎥
 
-### Watch SecureLettuce in Action
+### Watch FileLocker in Action
 
 <div align="center">
 
-[![SecureLettuce Demo](https://img.youtube.com/vi/Tf2Y46hyKlM/maxresdefault.jpg)](https://www.youtube.com/watch?v=Tf2Y46hyKlM&ab_channel=AshishRanjan)
+[![FileLocker Demo](https://img.youtube.com/vi/Tf2Y46hyKlM/maxresdefault.jpg)](https://www.youtube.com/watch?v=Tf2Y46hyKlM&ab_channel=AshishRanjan)
 
 **🎬 [Watch Full Demo on YouTube](https://www.youtube.com/watch?v=Tf2Y46hyKlM&ab_channel=AshishRanjan)**
 
-*See how SecureLettuce encrypts your files and provides transparent access through FUSE mounting*
+*See how FileLocker encrypts your files and provides transparent access through FUSE mounting*
 
 </div>
 
@@ -65,7 +65,7 @@ FileLocker is a comprehensive file security solution that provides:
 ## Architecture 🏗️
 
 ```
-SecureLettuce/
+FileLocker/
 ├── fort++/          # File encryption tool
 │   ├── config/      # Configuration management
 │   ├── crypto/      # Cryptographic utilities
@@ -96,7 +96,7 @@ sudo apt-get install build-essential libssl-dev libfuse-dev
 ```bash
 # Clone the repository
 git clone https://github.com/lazylettucewaseaten/fuse_lockingfolder
-cd SecureLettuce
+cd FileLocker
 
 # Build the project
 make
@@ -252,6 +252,6 @@ This is cryptographic software. While it implements industry-standard encryption
 
 <div align="center">
 
-**Made with ❤️ by Ranjan**
+**Made with ❤️ by lazylettucewaseaten**
 
 </div>
