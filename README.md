@@ -74,8 +74,9 @@ make
 
 #### Encrypt Files
 ```bash
-# Encrypt all files in a target folder
-./fort++ /path/to/config/folder /path/to/target/folder
+# Encrypt all files in a target folder (Mounting)
+# Initialise with first empty target folder and then store files.
+./openvault /path/to/config/folder /path/to/target/folder
 
 # Files will be:
 # - Encrypted with AES-256-GCM
