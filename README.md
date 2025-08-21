@@ -1,11 +1,57 @@
 # FileLocker 🔐
 A high-performance file encryption and secure vault system built in C++ with modular encryption support (currently AES-256-GCM) and FUSE filesystem integration.
 
+## Table of Contents 📋
+
+<div align="center">
+
+[Demo](#demo-) • 
+[Dependencies](#dependencies-) • 
+[Usage](#usage-) • 
+[Troubleshooting](#troubleshooting-) • 
+
+</div>
+
 ## Overview 📖
 
-SecureLettuce is a comprehensive file security solution that provides:
+FileLocker is a comprehensive file security solution that provides:
 - **fort++**: A command-line file encryption tool with master key management 🛠️
 - **openvault**: A FUSE-based encrypted filesystem for transparent file access 🗂️
+
+## Screenshots 📸
+
+
+### Before & After Encryption
+
+<div align="center">
+
+| Original Files | Encrypted Files |
+|:-------------:|:--------------:|
+| ![Before encryption](Screenshots/decrypted.png) | ![After encryption](Screenshots/encrypted.png) |
+| *Clear filenames and readable content* | *Encrypted filenames and secure storage* |
+
+</div>
+
+## Demo 🎥
+
+### Watch SecureLettuce in Action
+
+<div align="center">
+
+[![SecureLettuce Demo](https://img.youtube.com/vi/Tf2Y46hyKlM/maxresdefault.jpg)](https://www.youtube.com/watch?v=Tf2Y46hyKlM&ab_channel=AshishRanjan)
+
+**🎬 [Watch Full Demo on YouTube](https://www.youtube.com/watch?v=Tf2Y46hyKlM&ab_channel=AshishRanjan)**
+
+*See how SecureLettuce encrypts your files and provides transparent access through FUSE mounting*
+
+</div>
+
+### What You'll See in the Demo:
+- 🚀 Quick setup and initialization
+- 🔒 Real-time file encryption process
+- 📁 Transparent filesystem mounting
+- 🔐 Secure file access and operations
+- ⚡ Performance benchmarks
 
 ## Features ✨
 
@@ -28,6 +74,7 @@ SecureLettuce/
 │   ├── crypto/      # Crypto operations for FUSE
 │   ├── filesystem/  # FUSE operations
 │   └── main.cpp     # FUSE mount application
+├── screenshots/     # Demo screenshots
 └── Makefile         # Build system
 ```
 
@@ -101,7 +148,6 @@ make
 # Mount encrypted vault as normal filesystem
 ./openvault /path/to/config/folder /path/to/mount/point
 
-
 # Unmount
 fusermount -u /path/to/mount/point
 ```
@@ -145,7 +191,6 @@ MasterKey:SGVsbG9Xb3JsZCEhISE...
 - `filesystem/`: FUSE operation handlers
 - `main.cpp`: FUSE mount and daemon logic
 
-
 ## Security Considerations ⚠️
 
 - **Memory**: Sensitive data should be cleared from memory after use
@@ -165,8 +210,11 @@ sudo apt-get install libfuse-dev
 
 # Permission issues
 sudo usermod -a -G fuse $USER
-```
 
+# Path issues [Provide Complete path from ~ ]
+make clean 
+make
+```
 ### Runtime Issues
 ```bash
 # FUSE mount fails
@@ -184,7 +232,6 @@ sudo modprobe fuse
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-
 ## Disclaimer ⚠️
 
 This is cryptographic software. While it implements industry-standard encryption (AES-256-GCM), it has not undergone formal security auditing. Use at your own risk for non-critical applications. For production use, consider professional security review.
@@ -199,4 +246,12 @@ This is cryptographic software. While it implements industry-standard encryption
 
 ---
 
-**SecureLettuce** - Keeping your files secure! ✨
+**FileLocker** - Keeping your files secure! ✨
+
+---
+
+<div align="center">
+
+**Made with ❤️ by Ranjan**
+
+</div>
