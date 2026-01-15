@@ -16,7 +16,7 @@ A high-performance file encryption and secure vault system built in C++ with mod
 
 FileLocker is a comprehensive file security solution that provides:
 - **fort++**: A command-line file encryption tool with master key management 🛠️
-- **openvault**: A FUSE-based encrypted filesystem for transparent file access 🗂️
+- **openfort**: A FUSE-based encrypted filesystem for transparent file access 🗂️
 
 ## Screenshots 📸
 
@@ -103,7 +103,7 @@ cd FileLocker
 # Build the project
 make
 
-# Set executable paths (optional)
+# Set executable paths (optional) if this is enabled the command can be used from anywhere instead of figuring out the executable everytime
 ./setting_path_exec.sh
 ```
 
@@ -125,7 +125,7 @@ make
 ```bash
 # Encrypt all files in a target folder (Mounting)
 # Initialise with first empty target folder and then store files.
-./openvault /path/to/config/folder /path/to/target/folder
+./openfort /path/to/config/folder /path/to/target/folder
 
 # Files will be:
 # - Encrypted with AES-256-GCM
@@ -139,16 +139,16 @@ make
 ./fort++ init ~/my_vault
 
 # 2. Encrypt documents initial setup
-./openvault ~/my_vault ~/Documents/sensitive
+./openfort ~/my_vault ~/Documents/sensitive
 
 # 3. All files are now encrypted in ~/my_vault/
 ```
 
-### openvault: FUSE Filesystem
+### openfort: FUSE Filesystem
 
 ```bash
 # Mount encrypted vault as normal filesystem
-./openvault /path/to/config/folder /path/to/mount/point
+./openfort /path/to/config/folder /path/to/mount/point
 
 # Unmount
 fusermount -u /path/to/mount/point
