@@ -1,4 +1,4 @@
-# FileLocker 🔐
+     # FileLocker 🔐
 A high-performance file encryption and secure vault system built in C++ with modular encryption support (currently AES-256-GCM) and FUSE filesystem integration.
 
 ## Table of Contents 📋
@@ -89,6 +89,8 @@ FileLocker/
 ```bash
 sudo apt-get update
 sudo apt-get install build-essential libssl-dev libfuse-dev
+sudo apt install nlohmann-json3-dev
+sudo apt install libfuse3-dev
 ```
 
 ## Building 🔨
