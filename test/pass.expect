@@ -1,0 +1,5 @@
+#!/usr/bin/expect -f
+spawn ./openfort ./test_vault ./test_mount -f -d
+expect "Enter password:"
+send "pass\r"
+expect eof

@@ -162,13 +162,17 @@ int lz_read(const char *path, char *buf, size_t size, off_t offset, struct fuse_
     
     fs::path cpath;
     uint64_t file_size;
+    std::shared_ptr<std::shared_mutex> rw_lock;
     {
         std::lock_guard<std::mutex> lock(g_state_mutex);
         auto it = GSTATE.pt_map.find(p);
         if (it == GSTATE.pt_map.end()) return -ENOENT;
         cpath = fs::path(GSTATE.enc_dir) / it->second.cipher;
         file_size = it->second.size;
+        rw_lock = it->second.rw_lock;
     }
+    
+    std::shared_lock<std::shared_mutex> file_lock(*rw_lock);
     
     if (offset >= (off_t)file_size) return 0;
     if (offset + size > file_size) {
@@ -196,6 +200,8 @@ int lz_read(const char *path, char *buf, size_t size, off_t offset, struct fuse_
         vector<uint8_t> encrypted_block(CIPHERTEXT_BLOCK_SIZE);
         ifs.read(reinterpret_cast<char*>(encrypted_block.data()), CIPHERTEXT_BLOCK_SIZE);
         if (ifs.gcount() < (long)(IV_SIZE + TAG_SIZE)) break;
+        
+        encrypted_block.resize(ifs.gcount());
 
         vector<uint8_t> plain_block;
         if (!aes256_gcm_decrypt_blob(encrypted_block, file_key, IV_SIZE, TAG_SIZE, {}, plain_block)) {
@@ -223,12 +229,16 @@ int lz_write(const char *path, const char *buf, size_t size, off_t offset, struc
     if (!p.empty() && p[0] == '/') p = p.substr(1);
 
     fs::path cpath;
+    std::shared_ptr<std::shared_mutex> rw_lock;
     {
         std::lock_guard<std::mutex> lock(g_state_mutex);
         auto it = GSTATE.pt_map.find(p);
         if (it == GSTATE.pt_map.end()) return -ENOENT;
         cpath = fs::path(GSTATE.enc_dir) / it->second.cipher;
+        rw_lock = it->second.rw_lock;
     }
+    
+    std::unique_lock<std::shared_mutex> file_lock(*rw_lock);
 
     auto file_key = derive_file_key(p);
     if (file_key.empty()) return -EIO;
@@ -253,6 +263,7 @@ int lz_write(const char *path, const char *buf, size_t size, off_t offset, struc
             vector<uint8_t> encrypted_block(CIPHERTEXT_BLOCK_SIZE);
             iofs.read(reinterpret_cast<char*>(encrypted_block.data()), CIPHERTEXT_BLOCK_SIZE);
             if (iofs.gcount() >= (long)(IV_SIZE + TAG_SIZE)) {
+                encrypted_block.resize(iofs.gcount());
                 vector<uint8_t> decrypted_block;
                 if (aes256_gcm_decrypt_blob(encrypted_block, file_key, IV_SIZE, TAG_SIZE, {}, decrypted_block)) {
                     memcpy(plain_block.data(), decrypted_block.data(), decrypted_block.size());
@@ -279,6 +290,7 @@ int lz_write(const char *path, const char *buf, size_t size, off_t offset, struc
         out_blob.insert(out_blob.end(), ct.begin(), ct.end());
         out_blob.insert(out_blob.end(), tag.begin(), tag.end());
 
+        iofs.clear();
         iofs.seekp(cipher_block_offset, ios::beg);
         iofs.write(reinterpret_cast<const char*>(out_blob.data()), out_blob.size());
 
@@ -328,6 +340,7 @@ int lz_truncate(const char *path, off_t size, struct fuse_file_info *fi) {
     if (p.size() && p[0] == '/') p = p.substr(1);
     
     fs::path cpath;
+    std::shared_ptr<std::shared_mutex> rw_lock;
     {
         std::lock_guard<std::mutex> lock(g_state_mutex);
         auto it = GSTATE.pt_map.find(p);
@@ -335,7 +348,10 @@ int lz_truncate(const char *path, off_t size, struct fuse_file_info *fi) {
         cpath = fs::path(GSTATE.enc_dir) / it->second.cipher;
 
         it->second.size = size;
+        rw_lock = it->second.rw_lock;
     }
+    
+    std::unique_lock<std::shared_mutex> file_lock(*rw_lock);
     
 
     FileHeader header = {FILE_HEADER_MAGIC, (uint64_t)size};

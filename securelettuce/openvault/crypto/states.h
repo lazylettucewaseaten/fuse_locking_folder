@@ -4,11 +4,14 @@
 #include <vector>
 #include <unordered_map>
 #include <mutex>
+#include <shared_mutex>
+#include <memory>
 
 struct FileMeta {
     std::string plain;
     std::string cipher;
     uint64_t size;
+    std::shared_ptr<std::shared_mutex> rw_lock = std::make_shared<std::shared_mutex>();
 };
 
 struct State {
