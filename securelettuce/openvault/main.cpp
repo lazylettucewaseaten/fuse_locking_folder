@@ -40,8 +40,13 @@ int main(int argc,char *argv[]){
         return 1;
     }
 
-    string vault = argv[1];
-    string mountpoint = argv[2];
+    // fuse_main daemonizes and chdir("/"), so relative paths must be resolved now
+    error_code ec;
+    string vault = filesystem::canonical(argv[1], ec).string();
+    if (ec) {
+        cerr << "Vault dir not found: " << argv[1] << "\n";
+        return 1;
+    }
     GSTATE.enc_dir = vault;
 
     string confp = (filesystem::path(GSTATE.enc_dir) / "lazylocking.conf").string();

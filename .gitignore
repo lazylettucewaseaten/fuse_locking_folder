@@ -1,0 +1,13 @@
+*.md
+!README.md
+*.pdf
+
+# build outputs
+*.o
+/fort++
+/openfort
+test/test_crypto
+
+# generated
+graphify-out/
+*.log

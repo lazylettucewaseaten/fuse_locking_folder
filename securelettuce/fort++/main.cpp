@@ -16,6 +16,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <cstring>
+#include <filesystem>
 
 
 
@@ -32,6 +33,11 @@ int main(int argc, char* argv[]){
             return 1;
         }   
         std::string foldername=argv[2];
+        // re-init would overwrite the master key and orphan every encrypted file
+        if(std::filesystem::exists(std::filesystem::path(foldername)/"lazylocking.conf")){
+            std::cerr<<"Vault already initialised: "<<foldername<<"/lazylocking.conf exists\n";
+            return 1;
+        }
         //run the commands usage is char*
         
         std::vector<uint8_t> masterkey=generateMasterKey();
@@ -47,8 +53,10 @@ int main(int argc, char* argv[]){
             std::cerr<<"Different passwords\n";
             return 1;
         }
-        if(system(("mkdir -p "+foldername).c_str())!=0){
-            throw std::runtime_error("File not created ");
+        std::error_code ec;
+        std::filesystem::create_directories(foldername, ec);
+        if(ec){
+            throw std::runtime_error("Folder not created: "+ec.message());
         }
         chmod(foldername.c_str(), S_IRWXU);
         std::memset(pw,0,std::strlen(pw));
