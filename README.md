@@ -121,6 +121,10 @@ make
 # - .diriv  
 ```
 
+Paths can be relative or absolute for both `fort++` and `openfort`.
+
+`init` refuses to run on a folder that already contains `lazylocking.conf`, since re-initialising would replace the master key and make every existing encrypted file unreadable.
+
 #### Encrypt Files
 ```bash
 # Encrypt all files in a target folder (Mounting)
@@ -213,8 +217,8 @@ sudo apt-get install libfuse-dev
 # Permission issues
 sudo usermod -a -G fuse $USER
 
-# Path issues [Provide Complete path from ~ ]
-make clean 
+# Stale build after editing headers
+make clean
 make
 ```
 ### Runtime Issues
@@ -224,6 +228,10 @@ sudo modprobe fuse
 
 # Permission denied on mount
 # Add user to fuse group and re-login
+
+# "Vault already initialised" from fort++ init
+# The folder already holds a vault; mount it with openfort instead,
+# or pick a new empty folder for a new vault
 ```
 
 ## Contributing 🤝
